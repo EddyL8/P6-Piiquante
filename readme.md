@@ -16,7 +16,7 @@ nodemon server
 
 # Fichier .env
 
-Un fichier .env est nécessaire pour le fonctionnement de l'api, veuillez renseignez ceci :
+Un fichier .env est nécessaire dans le dossier backend pour le fonctionnement de l'api, veuillez renseigner ceci :
 
 DB_USER=(nom d'utilisateur de votre adresse SRV MongoDB)
 
