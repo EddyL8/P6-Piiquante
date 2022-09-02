@@ -1,23 +1,23 @@
-/* const passwordValidator = require("password-validator");
+const passwordValidator = require("password-validator"); // Importation du package de validation de mdp
 
+// Création du schéma de mdp
 const passwordSchema = new passwordValidator();
 
-passwordSchema
-.is().min(8)                                    // Minimum length 8
-.is().max(100)                                  // Maximum length 20
-.has().uppercase()                              // Must have uppercase letters
-.has().lowercase()                              // Must have lowercase letters
-.has().digits(2)                                // Must have at least 2 digits
-.has().symbols()                                // Must have symbols
-.has().not().spaces()                           // Should not have spaces
-.is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist these values
+passwordSchema // Schéma de création d'un mdp
+.is().min(8)                                    // 8 caractères minimum
+.is().max(20)                                   // 20 caractères maximum
+.has().uppercase()                              // Doit contenir au moins une majuscule
+.has().lowercase()                              // Doit contenir au moins une minuscule
+.has().digits(2)                                // Doit contenir au moins 2 chiffres
+.has().symbols()                                // Doit contenir au moins un symbole
+.has().not().spaces()                           // Ne doit pas contenir d'espace
+.is().not().oneOf(['Passw0rd', 'Password123']); // Exemples d'écriture de mdp refusés 
 
-
+// Vérification du mdp
 module.exports = (req,res,next) => {
-    if(passwordSchema.validate(req.body.password)){
+    if(passwordSchema.validate(req.body.password)){ // Validation si le mdp est conforme au schéma
         next();
-    }else{
+    }else{ // Envoi d'une erreur si le mdp n'est pas valide
         res.status(400).json({ error : `Le mot de passe n'est pas valide ! ${passwordSchema.validate('req.body.password',{list: true})}`})
     }
 };
-*/

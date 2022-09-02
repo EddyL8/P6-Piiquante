@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.5.1",

@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Package mongoose pour les interractions avec la base de données
 
+// Création du schéma de données de l'objet (sauce pour ce projet)
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
@@ -14,4 +15,5 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String] },
 });
 
+// Exportation du modèle objet
 module.exports = mongoose.model('Sauce', sauceSchema);

@@ -1,18 +1,16 @@
-// Importation du model Sauce
-const Sauce = require('../models/sauce');
-// Fonction de gestion de fichiers (modification/suppression)
-const fs = require('fs');
+const Sauce = require('../models/sauce'); // Importation du model Sauce
+const fs = require('fs'); // Fonction de gestion de fichiers (modification/suppression)
 
 // Ajout d'une nouvelle sauce (requête POST)
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id; // Suppression id généré automatiquement
-    const sauce = new Sauce({
+    const sauce = new Sauce({ // Création d'un nouvel objet
         ...sauceObject, // Récupération des données avec l'opérateur spread
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // Récupération de l'url de l'image
     });
   
-    sauce.save()
+    sauce.save() // Enregistre l'objet dans la base de données
     .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
     .catch(error => { res.status(400).json( { error })})
  };
@@ -31,26 +29,30 @@ exports.getOneSauce = (req, res, next) => {
 };
 
 // Affichage de toutes les sauces (requête GET)
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.getAllSauces = (req, res, next) => {
-  Sauce.find()
+  Sauce.find() // Récupération du tableau avec toutes les sauces de la base de données
   .then((sauce) => { res.status(200).json(sauce)})
   .catch((error) => { res.status(404).json({ error })});
 };
 
 // Modification d'une sauce seulement par l'utilisateur qui l'a créé (requête PUT)
 exports.modifySauce = (req, res, next) => {
-  // Modification du contenu et de l'image si elle est changée
-  const sauceObject = req.file ?
+  const sauceObject = req.file ? // Vérification de la présence d'un fichier image
     {
       ...JSON.parse(req.body.sauce),
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // Construction l'url de l'image
     } : { ...req.body };
-    // Suppression de l'image stockée localement
-    Sauce.findOne({ _id: req.params.id })
+    Sauce.findOne({ _id: req.params.id }) // Récupération l'id de l'objet
     .then(sauce => {
-    const filename = sauce.imageUrl.split('/images/')[1];
-    fs.unlink(`images/${filename}`, () => {
-        Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+    const filename = sauce.imageUrl.split('/images/')[1]; // Récupération du nom de fichier à supprimer
+    fs.unlink(`images/${filename}`, () => { // Suppression du fichier remplacé
+        Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) // Mise à jour après modification de l'objet
         .then(() => res.status(200).json({ message: 'Sauce modifié !'}))
         .catch(error => res.status(400).json({ error }));
     });
@@ -59,12 +61,11 @@ exports.modifySauce = (req, res, next) => {
 
 // Suppression d'une sauce (requête DELETE)
 exports.deleteSauce = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id})
+  Sauce.findOne({ _id: req.params.id}) // Récupération de l'id l'objet
     .then(sauce => {
-      const filename = sauce.imageUrl.split('/images/')[1]; // Récupération du nom du fichier
-      // Suppression des données et de l'image de la sauce
-      fs.unlink(`images/${filename}`, () => {
-        Sauce.deleteOne({_id: req.params.id})
+      const filename = sauce.imageUrl.split('/images/')[1]; // Récupération du nom du fichier à supprimer
+      fs.unlink(`images/${filename}`, () => { // Suppression du fichier image
+        Sauce.deleteOne({_id: req.params.id}) // Suppression de l'objet
           .then(() => { res.status(200).json({message: 'Objet supprimé !'})})
           .catch(error => res.status(401).json({ error }));
       }); 
@@ -79,7 +80,7 @@ exports.likeSauce = (req, res) => {
   // Si l'utilisateur like la sauce
   if (req.body.like === 1) { 
     Sauce.updateOne(
-      { _id: req.params.id }, 
+      { _id: req.params.id }, // Récupération de l'id de l'objet
       { $inc: { likes: 1 }, // Incrémentation de 1
       $push: { usersLiked: req.body.userId }} // Ajout de l'utilisateur qui like dans la tableau des likes
     )
