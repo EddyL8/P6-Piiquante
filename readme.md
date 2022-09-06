@@ -3,31 +3,25 @@
 # Lancement du serveur
 
 Depuis un terminal, executer les commandes suivantes pour le frontend :
-
+```
 cd frontend
-
 npm run start
-
+```
 Puis pour le backend : 
-
+```
 cd backend
-
 nodemon server
-
+```
 # Fichier .env
 
 Un fichier .env est nécessaire dans le dossier backend pour le fonctionnement de l'api, veuillez renseigner ceci :
-
+```
 DB_USER=(nom d'utilisateur de votre adresse SRV MongoDB)
-
 DB_PASSWORD=(mot de passe de votre adresse SRV MongoDB)
-
 DB_URL=(url de votre adresse SRV MongoDB)
-
 JWT_SECRET_TOKEN=(choisir un token)
-
 PORT=3000
-
+```
 # Fonctionnement
 
 Exécution du back : http://localhost:3000
@@ -41,26 +35,15 @@ Création d'un compte utilisateur :
 
 # Framework et packages utilisés
 
-Express
-
-Mongoose
-
-Mongoose-unique-validator
-
-Bcrypt
-
-Jsonwebtoken
-
-Multer
-
-Password-validator
-
-Helmet
-
-Express-rate-limit
-
-Express-mongoose-sanitize
-
-Xss-clean
-
-Cors
+- Express
+- Mongoose
+- Mongoose-unique-validator
+- Bcrypt
+- Jsonwebtoken
+- Multer
+- Password-validator
+- Helmet
+- Express-rate-limit
+- Express-mongoose-sanitize
+- Xss-clean
+- Cors
